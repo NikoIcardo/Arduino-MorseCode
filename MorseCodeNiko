@@ -1,0 +1,169 @@
+
+Main: 
+	ldi r24, $ff             ; set pin 13 as output
+	out ddrb, r24
+
+	call Zero
+	call ThreeSeconds
+	call Seven 
+	call ThreeSeconds
+	call Zero 
+	call ThreeSeconds
+	call One
+	call EndDelay
+	
+	jmp Main
+
+OneSecond:                   ; this includes count 1-4 and finish
+	ldi r16, $0
+	ldi r17, $0
+	ldi r18, $0 
+	ldi r19, $0
+	ldi r20, $1
+
+count: 
+	add r16, r20 
+	cpi r16, $64
+	brbs 1, count2
+	brbc 1, count
+count2: 
+	add r17, r20 
+	cpi r17, $32
+	brbs 1, count3
+	ldi r16, $0
+	brbc 1, count
+count3: 
+	add r18, r20 
+	cpi r18, $32
+	brbs 1, count4
+	ldi r16, $0 
+	ldi r17, $0
+	brbc 1, count
+count4: 
+	add r19, r20 
+	cpi r19, $d
+	brbs 1, finish
+	ldi r16, $0 
+	ldi r17, $0
+	ldi r18, $0
+	brbc 1, count
+finish: 
+	ret 
+
+ThreeSeconds: 
+	call OneSecond 
+	call OneSecond
+	call OneSecond
+	ret
+
+EndDelay: 
+	call ThreeSeconds
+	call OneSecond
+	call OneSecond
+	ret
+
+Zero:  
+	call LightOn             ; First 3 seconds on  
+	call ThreeSeconds
+
+	call LightOff            ; First Second Off
+	call OneSecond
+	
+
+	call LightOn            ; Second three Seconds on 
+	call ThreeSeconds
+
+	call LightOff             ; Second one second off
+	call OneSecond
+
+	call LightOn             ; Third three on 
+	call ThreeSeconds
+
+	call LightOff            ; third one off
+	call OneSecond
+	
+
+	call LightOn             ; Fourth three on
+	call ThreeSeconds
+
+	call LightOff             ; fourth off 
+	call OneSecond
+	
+	call LightOn              ; fifth light on 
+	call ThreeSeconds
+
+	call LightOff
+
+	ret						; end 
+
+Seven: 
+	call LightOn 
+	call ThreeSeconds
+
+	call LightOff
+	call OneSecond
+
+	call LightOn 
+	call ThreeSeconds
+
+	call LightOff
+	call OneSecond
+
+	call LightOn 
+	call OneSecond 
+
+	call LightOff
+	call OneSecond
+
+	call LightOn 
+	call OneSecond 
+
+	call LightOff
+	call OneSecond
+
+	call LightOn 
+	call OneSecond 
+
+	call LightOff
+	ret
+	
+One: 
+	call LightOn 
+	call OneSecond 
+
+	call LightOff
+	call OneSecond
+
+	call LightOn 
+	call ThreeSeconds
+
+	call LightOff
+	call OneSecond
+
+	call LightOn 
+	call ThreeSeconds
+
+	call LightOff
+	call OneSecond
+
+	call LightOn 
+	call ThreeSeconds
+
+	call LightOff
+	call OneSecond
+
+	call LightOn 
+	call ThreeSeconds
+
+	call LightOff
+	ret
+
+LightOn: 
+	ldi r24, $ff             
+	out portb, r24
+	ret 
+
+LightOff: 
+	ldi r24, $00             
+	out portb, r24
+	ret 
